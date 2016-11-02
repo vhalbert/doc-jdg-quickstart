@@ -1,0 +1,38 @@
+
+= Data Source - Using Protobuf Definition/Marshaller 
+
+The following is snippet example from standalone.xml configuration which shows how to configure for the JDG resource adapter where the protobuf definition and the marshaller(s) are needed in order to configure the JDG schema.
+
+This specific example is also configuring the "ChildClasses" by including their respective marshaller(s).  In this case, the relationship will be determined from reading the protobuf defintion file.   This will indicate whether the relationship will be either a 1-to-1 or 1-to-many relationship.
+
+[source,xml]
+.*Sample Resource Adapter*
+----
+               <resource-adapter id="infinispanRemQSDSL">
+                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.dsl"/>
+                    <connection-definitions>
+                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemoteDSL" enabled="true" use-java-context="true" pool-name="infinispanRemoteDSL">
+                            <config-property name="MessageDescriptor">
+                                quickstart.Person
+                            </config-property>
+                            <config-property name="Module">
+                                com.client.quickstart.addressbook.pojos
+                            </config-property>
+                            <config-property name="MessageMarshallers">
+                                org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PersonMarshaller,org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Address:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.AddressMarshaller
+                            </config-property>
+                            <config-property name="ProtobufDefinitionFile">
+                                /quickstart/addressbook.proto
+                            </config-property>
+                            <config-property name="RemoteServerList">
+                                127.0.0.1:11322
+                            </config-property>
+                            <config-property name="CacheTypeMap">
+                                addressbook_indexed:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
+                            </config-property>
+                        </connection-definition>
+                    </connection-definitions>
+                </resource-adapter>
+----
+
+  

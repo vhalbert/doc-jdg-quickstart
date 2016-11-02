@@ -1,0 +1,10 @@
+
+= JDG Remote Cache for Materialization 
+
+
+== Use Case
+
+This use case is to demonstrate how to materialize (cache) data from a JDV view into a JDG remote cache, via Hot Rod Client, and then access the cached data for improved query performance.  See https://access.redhat.com/documentation/en/red-hat-jboss-data-virtualization/6.3/paged/development-guide-volume-5-caching-guide/[External Materialization] for details on using external materialization.
+
+The following sections will describe how to materialize to a JDG cache use tooling or do it manually, when full flexibility is needed.
+

@@ -1,0 +1,16 @@
+
+= Configure JDG Caches 
+
+==  In the JDG Server
+
+JDV will need 3 JDG caches in order to perform a materialization.
+
+*  1 cache configured to be the alias tracking cache, which controls the cache name aliasing across all materializations.   1 cache can be used for all the materializations that are using the same JDG instance.
+** Will be configured in the property AliasCacheName in the JDV resource adapter
+*  2 caches per materialized view in Teiid
+**  These will be used to configure resource adapter in JDV
+*** 1 will be configured as the primary cache in the property cacheTypeMap
+*** 1 will be configured as the staging cache in the property StagingCacheName
+
+These cache names will be used when *Configuring JDG Resource Adapter*
+

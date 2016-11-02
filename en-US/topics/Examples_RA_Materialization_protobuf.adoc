@@ -1,0 +1,44 @@
+
+= Materialization - Using Protobuf Definition/Marshaller
+
+The following is snippet example from standalone.xml configuration for configuring the resource adapter for materialization.  This shows how to configure the resource adapter where the protobuf defintion file (.proto) and marshaller(s) are needed to configure the JDG schema.
+
+See link:Limitations.adoc[Materialization Limitations].
+
+[source,xml]
+.*Sample Resource Adapter*
+----
+
+              <resource-adapter id="infinispanRemQSDSL">
+                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.dsl"/>
+                    <connection-definitions>
+                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemoteDSL" enabled="true" use-java-context="true" pool-name="infinispanRemoteDSL">
+                            <config-property name="MessageDescriptor">
+                                quickstart.Person
+                            </config-property>
+                            <config-property name="Module">
+                                com.client.quickstart.addressbook.pojos
+                            </config-property>
+                            <config-property name="MessageMarshallers">
+                                org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person:org.jboss.as.quickstarts.datagrid.hotrod.query.marshallers.PersonMarshaller
+                            </config-property>
+                            <config-property name="ProtobufDefinitionFile">
+                                /quickstart/addressbook.proto
+                            </config-property>
+                            <config-property name="RemoteServerList">
+                                127.0.0.1:11322
+                            </config-property>
+                            <config-property name="CacheTypeMap">
+                                addressbook_indexed:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
+                            </config-property>
+                           <config-property name="StagingCacheName">
+                                addressbook_indexed_mat
+                            </config-property>
+                            <config-property name="AliasCacheName">
+                                aliasCache
+                            </config-property>
+                        </connection-definition>
+                    </connection-definitions>
+                </resource-adapter>
+
+----

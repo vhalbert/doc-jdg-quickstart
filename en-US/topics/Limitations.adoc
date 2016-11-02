@@ -1,0 +1,18 @@
+
+= Limitations
+
+The following are the current limitations to using a JDG cache:
+
+*  Multiple root pojo's in the same JDG Cache are not recommended unless access patterns are added so that "Select ALL" is disabled.   This is because "Select ALL" will cause a ClassCastException because its expecting to only deal with one pojo class type.
+
+*  Unfortunately for using protobufs, complex data types (i.e., Big Decimal) don't convert to C / C++. So it is recommended to stick with primitive data types. There are 3 options:
+
+1. use all primitive data types
+2. implement a marshaller that will handle the conversion
+3. create a view that will convert the bigdecimal to a string, then materialize that view.
+
+This will especially come into play when a view is to be materialized.  Thought will have to given to the data types in the view.
+
+
+*  Materialization does not support loading complex objects.  Example, either a 1-to-1 or 1-to-many relationship.
+

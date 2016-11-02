@@ -1,0 +1,52 @@
+
+= Materialization done Manually
+
+For an example server quickstart see:  quickstarts/jdg-remote-cache-materialization
+
+== For Each JDG Cache that will be Accessed
+
+The following is the process for materializing a view.
+
+===  Configure JDG Caches
+
+see the above JDG Server section regarding cache requirements.
+
+
+===  Create Pojo
+
+see link:PojoConfiguration.adoc[Pojo Creation] regarding how to create the pojo jar that will be used by the resource-adapter to configure the JDG schema.
+
+
+===  JDV Server Configuration
+
+*  deploy pojo module that was created
+*  if using pojo annotations, edit the module.xml for org.jboss.teiid.resource-adapter.infinispan.dsl resource adapter to add the pojo module dependency
+
+[source]
+.*Example module dependency*
+----
+<module name="{your.pojo.module.name}"  optional="true"  export="true" />
+----
+
+*  restart server
+
+=== Configuring JDG Resource Adapter
+
+See https://teiid.gitbooks.io/documents/content/v/9.1.x/admin/Infinispan_HotRod_Data_Sources.html[Infinispan DSL (Hot Rod) DataSources] for all the properties that could be used to configure the JDG resource adapter and will be covered in the following.
+
+Make sure the AliasCacheName and StatingCacheName are configured.
+ 
+For example xml snippets for configuring resource adapter, see the following:
+
+*  link:Examples_RA_Materialization_protobuf.adoc[Materialization using Protobuf/Marshaller]
+*  link:Examples_RA_Materialization_annotations.adoc[Materialization using Annotations]
+
+For example CLI scripts for installing resource adapter, see /docs/teiid/datasources/infinispan in the JDV server.
+
+== VDB Creation
+
+For full details on manually modeling the external materialization, see link:https://teiid.gitbooks.io/documents/content/v/9.1.x/reference/Infinispan_HotRod_Translator.html[Infinispan Translator - External Materialization section].
+
+Use the link:Examples_VDB_Mat.adoc[VDB Materialization Example] as a starting point for creating a xml form of VDB.
+
+

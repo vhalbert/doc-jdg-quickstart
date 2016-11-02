@@ -1,0 +1,8 @@
+
+= JDG Resource Adapter Examples
+
+The following are JDG resource adapter examples from the standalone.xml configuration.
+
+Example CLI scripts can be found in the folder at docs/teiid/datasources/infinispan/ for configuring the translator and resource adapter.
+
+

@@ -1,0 +1,24 @@
+
+= Outstanding Issues
+
+The following are the current issues:
+
+== Teiid Server
+
+=== Issues
+
+*  Querying 1-to-many relationship may return incorrect results, see https://issues.jboss.org/browse/TEIID-4534[TEIID-4534]
+*  Documentation issue, clarify that when defining the cacheTypeMap, the pfKeyField name should correspond to a getter/setter method in the pojo, see https://issues.jboss.org/projects/TEIID/issues/TEIID-4505[TEIID-4505]
+*  Enable translator to negate intNum <> 1 returning true when column is null, see https://issues.jboss.org/projects/TEIID/issues/TEIID-3732[TEIID-3732]
+
+=== RFE's
+
+*  Add support for updating/deleting child objects, see https://issues.jboss.org/projects/TEIID/issues/TEIID-4516[TEIID-4516]
+
+NOTE: Inserts are supported to parent and child objects.
+
+
+== Teiid Designer
+
+*  Exporting to create VDB xml (dynamic) doesn't contains double single apostrophe around procedure  https://issues.jboss.org/browse/TEIIDDES-2954
+

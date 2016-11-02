@@ -1,0 +1,52 @@
+
+link:./Legal_Notice.adoc[Legal Notice]
+
+image::cover_small.jpg[Teiid Logo]
+
+== Contribute to JDV Development Guidelines and Recommended Practices Guide
+
+The pages themselves have commenting enabled.  You should be able to click on any text area to add a comment.
+
+The documentation project is hosted on GitHub at (https://github.com/jboss-integration/jdv-best-practices).
+
+For simple changes you can just use the online editing capabilities of GitHub by navigating to the appropriate source file and selecting fork/edit.
+
+For larger changes follow these 3 steps:
+
+*Step.1* clone the sources
+
+----
+git clone git@github.com:van/jdv-best-practices.git
+---- 
+
+*Step.2* do edit
+
+Use any text editor to edit the adoc files, http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc Syntax Quick Reference] can help you in AsciiDoc Syntax.
+
+*Step.3* commit your change
+
+Commit your changes to create a pull request to be reviewed.
+
+== Test locally
+
+You may need test locally, to make sure the changes are correct, to do this install https://github.com/GitbookIO/gitbook[gitbook], then execute the following commands from the checkout location:
+
+----
+$ gitbook install
+$ gitbook serve -w
+----
+
+Once above commands executes successfully, the http format document can be test locally via `http://localhost:4000/`.
+
+== Generate html/pdf/epub/mobi 
+
+You may locally create rendered forms of the documentation. To do this install https://github.com/GitbookIO/gitbook[gitbook] and https://help.gitbook.com/build/ebookconvert.html[ebook-convert], then execute the following commands from the checkout location:
+
+----
+$ gitbook build ./ jdg-integration-guide
+$ gitbook pdf ./ jdg-integration-guide.pdf
+$ gitbook epub ./ jdg-integration-guide.epub
+$ gitbook mobi ./ jdg-integration-guide.mobi
+----
+
+Once above commands executes successfully, the `jdv-best-practices` folder, `jdv-best-practices.pdf`, `jdv-best-practices.epub`, and `jdv-best-practices.mobi` will be generated.

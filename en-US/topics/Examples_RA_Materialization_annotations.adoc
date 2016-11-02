@@ -1,0 +1,33 @@
+
+= Materialization - Using Annotations 
+
+The following is snippet example from standalone.xml configuration which shows how to configure for materialization.  This shows how to configure where the pojo is using annotations to configure the JDG schema.
+
+See link:Limitations.adoc[Materialization Limitations].
+
+[source,xml]
+.*Sample Resource Adapter for external materialization*
+----
+               <resource-adapter id="ispnHotrod">
+                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.dsl"/>
+                    <connection-definitions>
+                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemoteDSL" enabled="true" use-java-context="true" pool-name="infinispanHotRodDS">
+                            <config-property name="Module">
+                                com.client.quickstart.addressbook.pojos
+                            </config-property>
+                            <config-property name="StagingCacheName">
+                                addressbook_indexed_mat
+                            </config-property>
+                            <config-property name="AliasCacheName">
+                                aliasCache
+                            </config-property>
+                            <config-property name="RemoteServerList">
+                                127.0.0.1:11322
+                            </config-property>
+                            <config-property name="CacheTypeMap">
+                                addressbook_indexed:org.jboss.as.quickstarts.datagrid.hotrod.query.domain.Person;id
+                            </config-property>
+                        </connection-definition>
+                    </connection-definitions>
+                </resource-adapter>
+----

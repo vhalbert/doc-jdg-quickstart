@@ -1,0 +1,27 @@
+
+= JDV Server Configuration
+
+This describes how JDV server needs to be configured regardless of the use case, in order to integrate JDV with JDG using the Hot Rod Client.
+
+The following are the steps to configure the JDV Server:
+
+.  Review the link:Prerequisites.adoc[Prerequisites]
+.  Install the  JDG Hot Rod Client EAP Module kit into the JDV server
+
+NOTE:  If installing JDG 6.6, then will need to install the JDG 6.6.1 patch that upgrades infinispan module:  org.infinispan.protostream  to  protostream-3.0.5.Final.jar 
+
+.  Install the JDV 6.3.2 patch
+.  Configure JDG Cache DSL translator (if not already done), do the following:
+
+..  Start the JDV server
+..  open terminal window, cd into $JBOSS_HOME/bin
+..  execute the following command:
+
+[source]
+----
+      ./jboss-cli.sh  --connect  --file=../docs/teiid/datasources/infinispan/add-infinispan-cache-dsl-translator.cli
+----
+
+This will install the translator and an empty infinispan resource-adapter, which is used for tooling.
+
+

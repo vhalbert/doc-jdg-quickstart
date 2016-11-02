@@ -1,0 +1,90 @@
+
+= Pojo Creation
+
+This will describe the options for creating a pojo and configuring in the JDV server.
+
+If this is accessing an existing JDG cache, obtain the pojo .jar and the related artifacts (.proto file and marshaller(s) that was used to load the cache with.  see link:Prerequisites.adoc[Prequisites] to help determine the best option.
+
+NOTE:  See link:Limitations.adoc[Limitations using Protobuf] when using complex data types.
+
+WARNING:  Any time the pojo is changed, like adding/removing method or changing data types, the JDG cache will have to be reloaded because the JDG schema is being changed.
+
+
+== 1.  JDV Options for Configuring JDG Schema
+
+The following is what you will need to determine as to how you plan to configure the JDS Schema.
+
+[cols="2,4,3"]
+|===
+|JDG Version 
+|Configuration
+|Option for Creation
+
+|pre 6.6 and forward
+|Use protobuf (.proto) defintion file and marshallers
+|Will need to use the options JDG / Google provides for creating
+
+|6.6+
+|use the pojo protobuf annotation feature
+|Can use Teiid Designer or other Java tooling
+
+|===
+
+
+
+== 2.  Creating the Pojo
+
+===  Using Marshaller(s) and Protobuf Definition File
+
+*  For accessing existing JDG caches, the pojo
+*  For creating a pojo that uses marshaller(s) and protobuf defintion (.proto) file, see the JDG document https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html[Infinispan Query Guide to Protobuf Encoding]
+
+
+===  Using Protobuf Annotations
+
+The following will describe how a pojo should be created, packaged and configured on the server.
+
+*  create the pojo class, with annotations, and package into jar
+
+see JDG Documentation:  https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html#Defining_Protocol_Buffers_Schemas_With_Java_Annotations[Define Schemas with Java Annotations]
+
+
+
+== 3. Configuring the Pojo Module
+
+*  create the module that will be deployed to the server.
+
+[source,xml]
+.*Sample module.xml file*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="${module-name}">
+    <resources>
+        <resource-root path="{your-pojojarname}" />
+    </resources>
+
+    <dependencies>
+        <module name="org.infinispan.client.hotrod" slot="${jdg.slot}" optional="true" services="export"/>
+   	<module name="org.infinispan.protostream" slot="${jdg.slot}"  optional="true" services="export"/>
+
+        <module name="org.jboss.teiid.resource-adapter.infinispan.dsl" export="true" />
+    </dependencies>
+</module>
+----
+
+Where:::
+* ${module-name} is replaced with the folder structure of module.  Example:   folder - com/client/my/pojo/  then module-name is  com.client.my.pojo
+* ${your-pojojarname} is replaced with the name of jar where the pojo is packaged.  Example:  pojo.jar
+* The ${jdg.slot} needs to be substituted with the slot associated with the JDG Hot Rod Client EAP module kit installed.  Example:  jdg-6.6
+
+NOTE: The ${module-name} will be needed when configuring the resource-adapter.
+
+== 3.  If using Protobuf Annotations
+
+If using pojo annotations, edit the module.xml for org.jboss.teiid.resource-adapter.infinispan.dsl resource adapter to add the pojo module dependency
+
+[source]
+.*Example module dependency*
+----
+<module name="{your.pojo.module.name}"  optional="true"  export="true" />
+----

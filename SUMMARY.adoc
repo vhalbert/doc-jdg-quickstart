@@ -1,0 +1,32 @@
+= JDG Remote Cache Integration Guide
+
+Doc Writer <vhalbert@redhat.com>
+v1.0, 2016-10-25
+
+
+. link:Legal_Notice.adoc[Legal Notice]
+
+. link:en-US/topics/Prerequisites.adoc[Prerequisites]
+. link:en-US/topics/JDV_Configuration.adoc[JDV Server Configuration]
+. link:en-US/topics/UseCases.adoc[Use Cases]
+.. link:en-US/topics/JDG_RemoteCache_As_A_DataSource.adoc[JDG Remote Cache as a DataSource]
+.. link:en-US/topics/UseCaseMaterialization.adoc[JDG Remote Cache for Materialization]
+... link:en-US/topics/Materialization_Configure_Caches.adoc[Configure JDG Caches]
+... link:en-US/topics/Materialization_Using_Designer.adoc[Using Teiid Designer Tooling]
+... link:en-US/topics/Materialization_Manually.adoc[Materialization Done Manually]
+. link:en-US/topics/PojoConfiguration.adoc[Pojo Creation]
+. link:en-US/topics/TeiidDesignerWizards.adoc[Teiid Designer Wizards]
+.. link:en-US/topics/JDG_Connection_Profile.adoc[JDG Connection Profile]
+.. link:en-US/topics/Teiid_Connection_Importer.adoc[Import JDG Metadata]
+.. link:en-US/topics/Teiid_Materialize_View_Option.adoc[Teiid Materialize View]
+. link:en-US/topics/Addendum.adoc[Addendum]
+.. link:en-US/topics/Examples_RA.adoc[JDG Resource Adapter Examples]
+... link:en-US/topics/Examples_RA_annotations.adoc[DataSource using Annotations]
+... link:en-US/topics/Examples_RA_protobuf.adoc[DataSource using Protobuf/Marshaller]
+... link:en-US/topics/Examples_RA_Materialization_protobuf.adoc[Materialization using Protobuf/Marshaller]
+... link:en-US/topics/Examples_RA_Materialization_annotations.adoc[Materialization using Annotations]
+.. link:en-US/topics/Examples_VDB.adoc[VDB Examples]
+... link:en-US/topics/Examples_VDB_Simple.adoc[VDB Simple Example]
+... link:en-US/topics/Examples_VDB_Mat.adoc[JDG Materialization Example]
+.. link:en-US/topics/Issues.adoc[Outstanding RFE / Issues]
+.. link:en-US/topics/Limitations.adoc[Limitations]

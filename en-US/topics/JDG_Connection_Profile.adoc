@@ -1,0 +1,16 @@
+
+= JDG Connection Profile
+
+The following are the steps thru creating a JDG Connection Profile.  This connection profile can then be used to create the resource adapter on the JDV server.
+
+=== Select JDG Connection Profile option
+
+image::images/jdg_connprofile_a.png[Select JDG CP Option]
+
+
+=== Enter the JDG Resource Adapter properties
+
+image::images/jdg_connprofile_b.png[Enter JDG CP Properties]
+
+See https://teiid.gitbooks.io/documents/content/v/9.1.x/admin/Infinispan_HotRod_Data_Sources.html[Infinispan DSL (Hot Rod) DataSources] for additional clarification of the properties.
+

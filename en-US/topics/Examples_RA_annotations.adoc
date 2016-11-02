@@ -1,0 +1,32 @@
+
+= Data Souce - Using Annotations 
+
+The following is snippet example from standalone.xml configuration which shows how to configure for the JDG resource adapter where the pojo is using annotations to configure the JDG schema.
+
+This specific example is also configuring the "ChildClasses", indicating that the primary pojo (e.g., Person) will contain complex objects that either represent a 1-to-1 or 1-to-many relationship.
+
+[source,xml]
+.*Sample Resource Adapter*
+----
+               <resource-adapter id="infinispanRemQSDSL">
+                    <module slot="main" id="org.jboss.teiid.resource-adapter.infinispan.dsl"/>
+                    <connection-definitions>
+                        <connection-definition class-name="org.teiid.resource.adapter.infinispan.dsl.InfinispanManagedConnectionFactory" jndi-name="java:/infinispanRemoteDSL" enabled="true" use-java-context="true" pool-name="infinispanRemoteDSL">
+                            <config-property name="Module">
+                                com.client.quickstart.addressbook.pojos
+                            </config-property>
+                            <config-property name="RemoteServerList">
+                                127.0.0.1:11322
+                            </config-property>
+                            <config-property name="ChildClasses">
+                                com.client.quickstart.addressbook.pojos.domain.Address,com.client.quickstart.addressbook.pojos.domain.PhoneNumber
+                            </config-property>
+                            <config-property name="CacheTypeMap">
+                                addressbook_indexed:com.client.quickstart.addressbook.pojos.domain.Person;id
+                            </config-property>
+                        </connection-definition>
+                    </connection-definitions>
+                </resource-adapter>
+----
+
+  

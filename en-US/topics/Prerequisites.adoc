@@ -1,0 +1,14 @@
+
+= Prerequisites
+
+This discusses topics that need to be considered before the process begins of integrating JDV and JDG.
+
+== What You Will Need
+
+The following are the prerequisites for integrating JDG 6 with JDV:
+
+*  have an installed JDG server of version 6.4+
+*  obtain the corresponding version of JDG Hot Rod Client EAP Module Kit from the Customer Portal
+*  if using JDG 6.6, then will need the 6.6.1 patch for the JDG Hot Rod Client EAP Module Kit
+*  Need the JDV 6.3.2 patch
+

@@ -1,0 +1,31 @@
+= VDB Simple Example
+
+
+This is a VDB example that will expose the JDG metadata using the translator.
+The following example is from the JDV server quickstarts:  quickstarts/jdg-remote-cache
+
+[source:xml]
+.*Example VDB XML file*
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vdb name="Test" version="1">
+
+    <description>Test VDB</description>
+
+    <property name="UseConnectorMetadata" value="true" />
+
+    <model name="TestModel" type="Physical">
+        <property name="importer.useFullSchemaName" value="false"/>
+           
+         <source name="infinispan-cache-dsl-connector" 
+                  translator-name="infinispan-cache-dsl" 
+                  connection-jndi-name="java:/infinispanRemoteDSL" />
+    </model>
+</vdb>
+----
+
+To use the above example, do the following:
+
+*  copy to a {name}-vdb.xml file, change the connection-jndi-name to the JNDI you assigned to your resource adapter. 
+*  create an empty file by the same name of the above file, but also append .dodeploy after the .xml extension, example:  infinispan-dsl-cache-vdb.xml.dodeploy
+*  deploy both files at the same time.

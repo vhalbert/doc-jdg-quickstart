@@ -1,0 +1,13 @@
+{
+    "variables" : {
+        "versionNumber" : "8.12.x",
+        "fullVersionNumber": "8.12.5",
+        "asVersionNumber" :  "JBossAS 7",
+        "asName" :  "JBossAS",
+        "copyrightYear" :  "2016",
+        "copyrightHolder" :  "Red Hat, Inc.",
+        "javaVersionUrl" : "https://docs.oracle.com/javase/7",
+        "asDocRoot" : "https://docs.jboss.org/author/display/AS72/Documentation"
+    },
+    "plugins": ["collapsible-menu"]
+}

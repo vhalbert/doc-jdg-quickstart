@@ -1,0 +1,12 @@
+= JBoss Data Virtualization - JDG Remote Cache Integration Guide
+
+
+
+
+
+====================================================
+
+NOTE:  Documentation related to the Infinispan DSL (Hot Rod) Data Sources and Infinispan DSL Translator will be directed to the community documentation until the product documentation has been updated.
+
+
+====================================================
