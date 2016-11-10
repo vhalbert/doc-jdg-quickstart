@@ -20,5 +20,5 @@ NOTE: Inserts are supported to parent and child objects.
 
 == Teiid Designer
 
-*  Exporting to create VDB xml (dynamic) doesn't contains double single apostrophe around procedure  https://issues.jboss.org/browse/TEIIDDES-2954
+*  Exporting to create VDB xml (dynamic) doesn't contains double single apostrophe around procedure  https://issues.jboss.org/browse/TEIIDDES-2954  But this may longer be an issue as the materialize wizard will now set the extension property.
 

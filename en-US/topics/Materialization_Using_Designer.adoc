@@ -8,16 +8,25 @@ From a Teiid Designer perspective, a user will have views they wish to materiali
 The general workflow is as follows:
 
 * Select, or Create View, that will be materialized
-  . The View must have a primary key column that will be used as the primary key on the materialized table
-  . Only simple pojo’s are supported for materialization.  see link:Limitations.adoc[Materialization Complex Objects]
-  . Use native data types for the view columns
+  ** Consider adding the primary key to the View, which will be used as the primary key on the newly created materialized tables
+  *** Why is it better to add the primary key on the view?
+  **** The primary key will then be created on the newly created materialized tables
+  **** If the view is changed, the materialized process needs to be rerun in order to propogate the changes to the Pojo and materialized tables.  If the primary key was not done on the view, then the materialized tables will have to be manually updated again.
+  ** Only simple pojo’s are supported for materialization.  see link:Limitations.adoc[Materialization Complex Objects]
+  ** Use native data types for the view columns
 
   NOTE:: to use complex data types, like big decimal, see link:Limitations.adoc[Protobuf Limitations using Complex Data Types]
 
-* Right mouse click on selected view and then select *Materialize* option to link:Teiid_Materialize_View_Option.adoc[Generate JDG Source Tables, POJO and Module Zip]
+* Right click on selected view, select *Modeling* --> link:Teiid_Materialize_View_Option.adoc[Materialize] option to Generate JDG Source Tables, POJO and Module Zip
   . Creates the JDG source model and a JDG staging table (i.e, prefixed with ST_ by default)
   . Creates POJO from selected relational table and columns
   .. Information will be needed in the next step to create connection profile
+
+* After performing the *Materialize* wizard, update the view materialize extension properties
+** Set relational:Time To Live(ms) time to indicate frequency of the refresh to be performed
+** Consider enabling being be management controlled and set the status table.
+** See link:https://teiid.gitbooks.io/documents/content/v/9.1.x/caching/External_Materialization.html#_external_materialized_data_source_systems[View Extension Properties] for all the possible options for configuring the view options.
+
 
 * Deploy POJO zip
  
@@ -37,20 +46,22 @@ Location:  modules/system/layers/dv/org/jboss/teiid/resource-adapter/infinispan/
   . JDG Resource Adapter configured for materialization
   . Set JDG connection profile on JDG materialized source model
 
-* Create data source from Connection Profile
-** Verify data source was created by checking the server view
+* Create data source from the created JDG Connection Profile
+
+Verify data source was created by checking the server view
 
 image::images/resource_adapter_created.png[Server View]
 
+
 * Create VDB
-  . Ensure the materialized view model and the JDG source model are added
-  . Set translator type “infinispan-cache-dsl” on the JDG source model
-  . For the JDG soure model, need the following translator overrides:
-  .. SupportsDirectQueryProcedure = true
-  .. SupportsNativeQueries = true
+  * Ensure the materialized view model and the JDG source model are added
+  * A translator override was created, named {jdgSourceTableName}_infinispan-cache-dsl, set this as the translator for the JDG source model
+  ** This translator override has the following required overrides to enable JDG materialization to work
+  *** SupportsDirectQueryProcedure = true
+  *** SupportsNativeQueries = true
 
 * Deploy VDB
 * Test VDB
-* Query the view that was materialized
+** Query the view that was materialized
 
 

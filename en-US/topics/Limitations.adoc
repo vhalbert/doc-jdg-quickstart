@@ -3,16 +3,16 @@
 
 The following are the current limitations to using a JDG cache:
 
+
 *  Multiple root pojo's in the same JDG Cache are not recommended unless access patterns are added so that "Select ALL" is disabled.   This is because "Select ALL" will cause a ClassCastException because its expecting to only deal with one pojo class type.
 
-*  Unfortunately for using protobufs, complex data types (i.e., Big Decimal) don't convert to C / C++. So it is recommended to stick with primitive data types. There are 3 options:
+*  Materialization does not support loading complex objects.  Example, either a 1-to-1 or 1-to-many relationship.
+
+*  When creating a view/table that will accessing a JDG Cache, for simplicity, its recommended to use link:https://developers.google.com/protocol-buffers/docs/proto#scalar[primitive data types].   This is because complex data types (i.e., Big Decimal) don't convert to C / C++.  There are 3 options:
 
 1. use all primitive data types
 2. implement a marshaller that will handle the conversion
 3. create a view that will convert the bigdecimal to a string, then materialize that view.
 
-This will especially come into play when a view is to be materialized.  Thought will have to given to the data types in the view.
-
-
-*  Materialization does not support loading complex objects.  Example, either a 1-to-1 or 1-to-many relationship.
+*  Modeling the JDG Source tables - recommended to use Teiid Designer Tooling to create the tables (and columns) that correspond to a JDG remote cache because the querying of the JDG cache is case sensitive.  The 'name' used in the query to JDG must match the name of the property (methodName) that was used.  Another option is to use a VDB in xml form where the related JDG source model points to a JDG data source via JNDI, but does not include specific the DDL.  It allows the translator to expose the metadata for the configured pojo(s) in the resource adapter.  Therefore, if you do manually create the DDL to define the table, be sure either the column name (or NameInSource) matches what the metadata will expose from the translator. 
 

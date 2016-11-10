@@ -9,7 +9,7 @@
 
 *The following are the steps to perform *Materialize* wizard*
 
-*  1)  Right click on selected view and select *Materialize* option
+*  1)  Right click on selected view, select *Modeling* --> *Materialize* option
 
 The following 1st dialog will be presented:
 

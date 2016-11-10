@@ -34,7 +34,10 @@ see link:PojoConfiguration.adoc[Pojo Creation] regarding how to create the pojo 
 
 See https://teiid.gitbooks.io/documents/content/v/9.1.x/admin/Infinispan_HotRod_Data_Sources.html[Infinispan DSL (Hot Rod) DataSources] for all the properties that could be used to configure the JDG resource adapter and will be covered in the following.
 
-Make sure the AliasCacheName and StatingCacheName are configured.
+Ensure the following:
+
+* the primary key field is indicated on the cacheTypeMap property;  cacheName:pojoClassName;primaryKeyFieldName
+* the AliasCacheName and StatingCacheName are configured.
  
 For example xml snippets for configuring resource adapter, see the following:
 

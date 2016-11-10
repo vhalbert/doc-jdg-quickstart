@@ -1,58 +1,52 @@
 
 = Pojo Creation
 
-This will describe the options for creating a pojo and configuring in the JDV server.
+This will discuss the options for creating a pojo for deployment as a module to the JDV server.
 
-If this is accessing an existing JDG cache, obtain the pojo .jar and the related artifacts (.proto file and marshaller(s) that was used to load the cache with.  see link:Prerequisites.adoc[Prequisites] to help determine the best option.
-
-NOTE:  See link:Limitations.adoc[Limitations using Protobuf] when using complex data types.
+NOTE:  Using complex data types, see link:Limitations.adoc[Limitations using Protobuf] .
 
 WARNING:  Any time the pojo is changed, like adding/removing method or changing data types, the JDG cache will have to be reloaded because the JDG schema is being changed.
 
 
-== 1.  JDV Options for Configuring JDG Schema
+== 1. How will JDG Schema be Configured in Hot Rod Client
 
-The following is what you will need to determine as to how you plan to configure the JDS Schema.
+The following is to help you determine how to create the pojo and related artifacts.
 
-[cols="2,4,3"]
+[cols="2,6"]
 |===
-|JDG Version 
-|Configuration
-|Option for Creation
+|*Installed JDG Version* 
+|*Configure Schema Options*
 
-|pre 6.6 and forward
-|Use protobuf (.proto) defintion file and marshallers
-|Will need to use the options JDG / Google provides for creating
+|6.4 or 6.5
+|use pojo, protobuf (.proto) defintion file and marshallers
 
 |6.6+
-|use the pojo protobuf annotation feature
-|Can use Teiid Designer or other Java tooling
+|use pojo, protobuf (.proto) defintion file and marshallers or use pojo containing protobuf annotations
 
 |===
 
+*  If using pojo, protobuf (.proto) defintion file and marshallers will need to use the options JDG / Google provides for creating, see https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html[Infinispan Query Guide to Protobuf Encoding]
+*  If using pojo containing protobuf annotations see https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html#Defining_Protocol_Buffers_Schemas_With_Java_Annotations[Define Schemas with Java Annotations]
 
 
-== 2.  Creating the Pojo
-
-===  Using Marshaller(s) and Protobuf Definition File
-
-*  For accessing existing JDG caches, the pojo
-*  For creating a pojo that uses marshaller(s) and protobuf defintion (.proto) file, see the JDG document https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html[Infinispan Query Guide to Protobuf Encoding]
+== 2. Create Pojo
 
 
-===  Using Protobuf Annotations
+=== Using Teiid Designer
 
-The following will describe how a pojo should be created, packaged and configured on the server.
+There are 2 ways to create the pojo:
 
-*  create the pojo class, with annotations, and package into jar
+*  Select view/table then right mouse click, select Modeling --> Create Pojo
+*  Select view then right mouse click, select Materialize (this wizard will provide the option to create the pojo)
 
-see JDG Documentation:  https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html#Defining_Protocol_Buffers_Schemas_With_Java_Annotations[Define Schemas with Java Annotations]
+The result of these options can be a packaged module zip that can be used to deploy the pojo to the JDV server by unzipping at the JBOSS_HOME root directory.
 
+=== Manually Creating Pojo
 
+*  If using pojo, protobuf (.proto) defintion file and marshallers will need to use the options JDG / Google provides for creating, see https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html[Infinispan Query Guide to Protobuf Encoding]
+* If creating pojo that contains protobuf annotations see https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Data_Grid/6.6/html/Infinispan_Query_Guide/sect-Protobuf_Encoding.html#Defining_Protocol_Buffers_Schemas_With_Java_Annotations[Define Schemas with Java Annotations]
 
-== 3. Configuring the Pojo Module
-
-*  create the module that will be deployed to the server.
+When manually creating the pojo, will also need to deploy it as a module to the JDV server.   The following is an example of the pojo module that should be used:
 
 [source,xml]
 .*Sample module.xml file*
@@ -79,12 +73,3 @@ Where:::
 
 NOTE: The ${module-name} will be needed when configuring the resource-adapter.
 
-== 3.  If using Protobuf Annotations
-
-If using pojo annotations, edit the module.xml for org.jboss.teiid.resource-adapter.infinispan.dsl resource adapter to add the pojo module dependency
-
-[source]
-.*Example module dependency*
-----
-<module name="{your.pojo.module.name}"  optional="true"  export="true" />
-----

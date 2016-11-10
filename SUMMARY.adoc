@@ -19,7 +19,7 @@ v1.0, 2016-10-25
 .. link:en-US/topics/JDG_Connection_Profile.adoc[JDG Connection Profile]
 .. link:en-US/topics/Teiid_Connection_Importer.adoc[Import JDG Metadata]
 .. link:en-US/topics/Teiid_Materialize_View_Option.adoc[Teiid Materialize View]
-. link:en-US/topics/Addendum.adoc[Addendum]
+. link:en-US/topics/Appendix.adoc[Appendix]
 .. link:en-US/topics/Examples_RA.adoc[JDG Resource Adapter Examples]
 ... link:en-US/topics/Examples_RA_annotations.adoc[DataSource using Annotations]
 ... link:en-US/topics/Examples_RA_protobuf.adoc[DataSource using Protobuf/Marshaller]

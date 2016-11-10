@@ -8,7 +8,7 @@ This use case is to access a JDG remote cache, via Hot Rod Client, as a data sou
 
 == For Each JDG Cache that will be Accessed
 
-The following is the process for integrating a JDG remote cache as a data source in JDV.   This should be done for each JDG Cache that will be accessed, even when sharing the same cache.  See link:Limitations.adoc[Limitations]
+The following is the process for integrating a JDG remote cache as a data source in JDV.   This should be done for each JDG Cache that will be accessed.  See link:Limitations.adoc[Limitations]
 
 
 ===  In the JDG Server
@@ -24,7 +24,7 @@ see link:PojoConfiguration.adoc[Pojo Creation] regarding how to create the pojo 
 ===  JDV Server Configuration
 
 *  deploy pojo module that was created
-*  if using pojo annotations, edit the module.xml for org.jboss.teiid.resource-adapter.infinispan.dsl resource adapter to add the pojo module dependency
+*  if using pojo annotations, edit the module.xml for resource adapter *org.jboss.teiid.resource-adapter.infinispan.dsl* to add the pojo module dependency
 
 [source]
 .*Example module dependency*
@@ -42,26 +42,29 @@ See https://teiid.gitbooks.io/documents/content/v/9.1.x/admin/Infinispan_HotRod_
 
 Use link:JDG_Connection_Profile.adoc[Teiid Designer JDG Connection Profile] tooling to create the data source.
 
+Once the JDG connection profile is created and set on the source model, then create the data source on the JDV server.  Select the source model, right mouse click and select Modeling --> Create Data Source.
+
 ==== B. Use CLI script
  
 For example CLI scripts for installing resource adapter, see /docs/teiid/datasources/infinispan in the JDV server.
 
 
-==  VDB Creation
+===  Modeling JDG Source Table
 
+==== Using Teiid Designer
 
-=== Create VDB xml (Dynamic)
-
-A quick way to expose the JDG data source is to deploy a VDB xml file where the metadata will be exposed by reverse engineering from the defined pojo's on the resource adapter.  See the link:Examples_VDB_Simple.adoc[VDB Example].
-
-=== Create VDB using Teiid Desginer
-
-The following will explain the steps to Teiid Designer to model the JDG Source and build a VDB to access the JDG cache.
+The following will explain the steps to Teiid Designer to model the JDG Source to access the JDG cache.
 
 .  Perform the above steps to deploy the pojo and configure the resource adapter
 .  You have Teiid Designer open with a model project created or opened, and connected to the JDV server
 .  Use link:Teiid_Connection_Importer.adoc[Teiid Connection Importer] to create the source model from the JDG Data Source.
 .  Create the VDB that contains the source model.
 .  Deploy and Test.
+
+==== Manually Modeling
+
+It is not recommended to manually model a JDG source table.  Either use Teiid Connection Importer or deploy a VDB xml file where the related JDG source model points to a JDG data source via JNDI, but does not include specific the DDL.  It allows the translator to expose the metadata for the configured pojo(s) in the resource adapter.  See the link:Examples_VDB_Simple.adoc[VDB Example].
+
+
 
 

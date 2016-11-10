@@ -1,76 +1,70 @@
 = VDB Example for Materializing into JDG Cache
 
-The following example is from the JDV server quickstarts:  quickstarts/jdg-remote-cache-materialization
+The following example is from extending, "Reusing", the Portfolio VDB from the quickstart:  quickstarts/dynamicvdb-datafederation.
+This was chose so that it demonstrated the adjusting of a BigDecimal data type in order to materialize the view.
 
 [source]
 .*Example VDB*
 ----
 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<vdb name="PeopleMat" version="1">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="StockVDB" version="1">
+        <description/>
+                <property name="validationDateTime" value="Fri Nov 04 08:42:18 EDT 2016"/>
+                <property name="validationVersion" value="8.12.7"/>
+        <import-vdb import-data-policies="false" name="Portfolio" version="1"/>
+        <model name="StocksView" type="VIRTUAL">
+                <property name="imports" value="StockJDGSource"/>
+                <metadata type="DDL"><![CDATA[
+        CREATE VIEW Stock (
+	        product_id integer OPTIONS(NAMEINSOURCE '"product_id"', NATIVE_TYPE 'integer', UPDATABLE 'FALSE', FIXED_LENGTH 'TRUE'),
+	        symbol string(4000) OPTIONS(NAMEINSOURCE '"symbol"', NATIVE_TYPE 'string', UPDATABLE 'FALSE'),
+	        price string(50) OPTIONS(NAMEINSOURCE '"price"', NATIVE_TYPE 'String', UPDATABLE 'FALSE', SIGNED 'FALSE', FIXED_LENGTH 'TRUE'),
+	        company_name string(256) OPTIONS(NAMEINSOURCE '"company_name"', NATIVE_TYPE 'string', UPDATABLE 'FALSE'),
+	        CONSTRAINT PK_prodid PRIMARY KEY(product_id)
+        ) OPTIONS(MATERIALIZED 'TRUE', MATERIALIZED_TABLE 'StockJDGSource.Stock', 
+                "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'TRUE', 
+                "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'execute StockJDGSource.native(''swap cache names'');', 
+                "teiid_rel:MATVIEW_STATUS_TABLE" 'Accounts.status', 
+                "teiid_rel:MATVIEW_TTL" '1000', 
+                "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute StockJDGSource.native(''truncate cache'');', 
+                "teiid_rel:MATERIALIZED_STAGE_TABLE" 'StockJDGSource.ST_Stock') 
+        AS
+	        SELECT
+		        Stocks.Stock.product_id, Stocks.Stock.symbol, CAST(Stocks.Stock.price AS String) AS price, Stocks.Stock.company_name
+	        FROM
+		        Stocks.Stock;
 
-    <description>Shows how to materialize into an Infinispan remote cache</description>
-    
-    <property name="UseConnectorMetadata" value="cached" />
-    <property name ="lib" value ="com.client.quickstart.addressbook.pojos" />
-    
-    <import-vdb name="Portfolio" version="1" import-data-policies="true"/>
-    
- 
-    <model name="PersonInfoModel" type="VIRTUAL">
-        <metadata type="DDL"><![CDATA[   
-                
-        CREATE VIEW PersonInfo (
-            name string,
-            id integer,
-            email string
-            )
-            AS  
-              select FIRSTNAME || ' ' || LASTNAME as name, a.ACCOUNT_ID as "id",
-                  FIRSTNAME || '.' || LASTNAME || '@email.com' as email 
-                   from ACCOUNTS.CUSTOMER c, ACCOUNTS.ACCOUNT a WHERE a.SSN = c.SSN;
-                 
-        ]]> </metadata>
-    </model>
-    
-    <model name="PersonMatCache" type="Physical">
-        <property name="importer.useFullSchemaName" value="false"/>
-           
-        <source name="PersonMatSource1" translator-name="infinispan1" connection-jndi-name="java:/infinispanRemoteDSL" />
+                ]]></metadata>
+        </model>
 
-    </model> 
-    
-	<model name="PersonMatModel" type="VIRTUAL">
-		<metadata type="DDL"><![CDATA[
-	CREATE view PersonMatView
-		(
-            name string,
-            id integer,
-            email string
-            
- 		) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'TRUE',
-               MATERIALIZED_TABLE 'PersonMatCache.Person', 
-               "teiid_rel:MATVIEW_TTL" 10000,
-               "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute PersonMatCache.native(''truncate cache'');',
-   		       "teiid_rel:MATVIEW_LOAD_SCRIPT" 'insert into PersonMatCache.ST_Person (name, id, email) SELECT  name, id, email from PersonInfoModel.PersonInfo',
-               "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT"  'execute PersonMatCache.native(''swap cache names'');', 
-               "teiid_rel:MATVIEW_SHARE_SCOPE" 'NONE',
-               "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true', 
-               "teiid_rel:MATVIEW_STATUS_TABLE" 'Accounts.status',                
-               "teiid_rel:MATVIEW_ONERROR_ACTION" 'WAIT')
- 		AS SELECT  name, id, email from PersonInfoModel.PersonInfo;
-    	]]>
-   		</metadata>
-	</model>
-         
-  
-    <translator name="infinispan1" type="infinispan-cache-dsl">
+        <model name="StockJDGSource">
+                <source connection-jndi-name="java:/StockMatSource" name="StockJDGSource" translator-name="StockJDGSource_infinispan-cache-dsl"/>
+                <metadata type="DDL"><![CDATA[
+SET NAMESPACE 'http://www.teiid.org/translator/object/2016' AS OBJECT_NS;
 
-       <property name="SupportsDirectQueryProcedure" value="true"/>
-       <property name="SupportsNativeQueries" value="true"/>
-        <property name="SupportsCompareCriteriaOrdered" value="true" />
+CREATE FOREIGN TABLE Stock (
+	product_id integer OPTIONS(NATIVE_TYPE 'integer', FIXED_LENGTH 'TRUE'),
+	symbol string(4000) OPTIONS(NATIVE_TYPE 'string'),
+	price string(50) AUTO_INCREMENT OPTIONS(NATIVE_TYPE 'String', SIGNED 'FALSE', FIXED_LENGTH 'TRUE'),
+	company_name string(256) OPTIONS(NATIVE_TYPE 'string'),
+	CONSTRAINT PK_prodid PRIMARY KEY(product_id)
+) OPTIONS(UPDATABLE 'TRUE')
 
-    </translator>
+CREATE FOREIGN TABLE ST_Stock (
+	product_id integer OPTIONS(NATIVE_TYPE 'integer', FIXED_LENGTH 'TRUE'),
+	symbol string(4000) OPTIONS(NATIVE_TYPE 'string'),
+	price string(50) AUTO_INCREMENT OPTIONS(NATIVE_TYPE 'String', SIGNED 'FALSE', FIXED_LENGTH 'TRUE'),
+	company_name string(256) OPTIONS(NATIVE_TYPE 'string'),
+	CONSTRAINT PK_prodid PRIMARY KEY(product_id)
+) OPTIONS(UPDATABLE 'TRUE', "OBJECT_NS:primary_table" 'StockJDGSource.Stock')
+
+                ]]></metadata>
+        </model>
+        <translator description="" name="StockJDGSource_infinispan-cache-dsl" type="infinispan-cache-dsl">
+                <property name="SupportsNativeQueries" value="true"/>
+                <property name="SupportsDirectQueryProcedure" value="true"/>
+        </translator>
 </vdb>
 
 ----
